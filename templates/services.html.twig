@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+    <body>
+        {{ include('navbar.html.twig') }}
+
+        <div id="card-container" class="container" style="margin-left: 300px;margin-top: 100px;color: white">
+            {% set count = 1 %}
+            {% for service in services %}
+                {% if count % 2 %}
+                    <div class="row" style="margin-top: 20px">
+                        <div class="card col bg-dark" style="width: 18rem;">
+                            <img src="https://www.artlebedev.com/1shot/interiors/1shot-interiors-gg-light.jpg" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ service.name }}</h5>
+                                <p class="card-text">{{ service.price.amount }} бел. рублей, комната: {{ service.room.name }}</p>
+                                <a href="http://localhost:8000/booking-page?service_id={{ service.id }}" class="btn btn-primary">Забронировать</a>
+                            </div>
+                        </div>
+                {% else %}
+                    <div class="card col" style="width: 18rem;margin-left: 20px">
+                        <img src="https://www.artlebedev.com/1shot/interiors/1shot-interiors-gg-light.jpg" class="card-img-top" alt="">
+                        <div class="card-body bg-dark">
+                            <h5 class="card-title">{{ service.name }}</h5>
+                            <p class="card-text">{{ service.price.amount }} бел. рублей, комната: {{ service.room.name }}</p>
+                            <a href="http://localhost:8000/booking-page?service_id={{ service.id }}" class="btn btn-primary">Забронировать</a>
+                        </div>
+                    </div>
+                    </div>
+                {% endif %}
+                {% set count = count + 1 %}
+            {% endfor %}
+        </div>
+    </body>
+</html>

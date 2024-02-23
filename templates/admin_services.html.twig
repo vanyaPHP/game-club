@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+    <body>
+        {{ include('navbar.html.twig') }}
+
+        <form method="POST" action="http://localhost:8000/services-store" style="margin-top: 50px;width: 30%;margin-left: 50px">
+            <h2>Создание услуги</h2>
+            <div class="mb-3">
+                <label for="name" class="form-label">Название сервиса</label>
+                <input type="text" name="name" class="form-control" id="name">
+            </div>
+            <div class="mb-3">
+                <label for="room_id" class="form-label">Комната</label>
+                <select name="room_id" class="form-select">
+                    {% for room in rooms %}
+                        <option value="{{ room.id }}">{{ room.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Цена</label>
+                <input type="text" name="price" class="form-control" id="price">
+            </div>
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </form>
+
+        {% if services|length > 0 %}
+            <table style="margin-top: 50px" class="table table-bordered table-hover table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Название услуги</th>
+                    <th>Комната</th>
+                    <th>Цена</th>
+                </tr>
+                {% for service in services %}
+                    <tr>
+                        <th>{{ service.id }}</th>
+                        <th>{{ service.name }}</th>
+                        <th>{{ service.room.name }}</th>
+                        <th>{{ service.price.amount }} бел. рублей</th>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </body>
+</html>

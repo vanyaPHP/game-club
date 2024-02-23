@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Meta arena</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% if user is not null %}
+                {% if user.role.name == "admin" %}
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/services-admin">Услуги</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/rooms-admin">Комнаты</a>
+                        </li>
+                    </ul>
+                {% else%}
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/services">Услуги</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/booking-page">Бронирование</a>
+                        </li>
+                    </ul>
+                {% endif %}
+            {% else %}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/services">Услуги</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/booking-page">Бронирование</a>
+                    </li>
+                </ul>
+            {% endif %}
+            <ul class="navbar-nav mb-2 mb-lg-0">
+            {% if user is null %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login-page">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register-page">Зарегестрироваться</a>
+                </li>
+            {% else %}
+                <li class="nav-link disabled">
+                    Добро пожаловать, {{ user.username }}
+                </li>
+                <button class="btn btn-outline-success" onclick="window.location.href = 'http://localhost:8000/profile'">
+                    Профиль
+                </button>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Выйти</a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
