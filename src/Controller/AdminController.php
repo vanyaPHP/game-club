@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Computer;
 use App\Entity\Price;
+use App\Entity\Role;
 use App\Entity\Room;
 use App\Entity\Service;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,6 +45,35 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/users-admin', name: 'users_admin')]
+    public function usersPage(Request $request): Response
+    {
+        /**
+         * @var UserRepository $userRepository
+         */
+        $userRepository = $this->entityManager->getRepository(User::class);
+
+        return $this->render('admin_users.html.twig', [
+            'user' => $userRepository->find($request->getSession()->get('user_id')),
+            'users' => $userRepository
+                ->findCustomers(
+                    $this->entityManager->getRepository(Role::class)
+                    ->findOneBy(['name' => "customer"])
+                )
+        ]);
+    }
+
+    #[Route('/users-block', name: 'users_admin_block', methods: 'POST')]
+    public function blockUser(Request $request): RedirectResponse
+    {
+        $user = $this->entityManager->getRepository(User::class)->find($request->request->get('user_id'));
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        return $this->redirect('http://localhost:8000/users-admin');
+    }
+
+
     #[Route('/rooms-store', name: 'rooms_admin_store', methods: 'POST')]
     public function roomStore(Request $request): RedirectResponse|Response
     {
@@ -76,6 +107,17 @@ class AdminController extends AbstractController
         return $this->redirect('http://localhost:8000/rooms-admin');
     }
 
+    #[Route('/rooms-delete', name: 'rooms_admin_delete', methods: 'POST')]
+    public function roomDelete(Request $request): RedirectResponse
+    {
+        $room = $this->entityManager->getRepository(Room::class)
+            ->find($request->request->get('room_id'));
+        $this->entityManager->remove($room);
+        $this->entityManager->flush();
+
+        return $this->redirect('http://localhost:8000/rooms-admin');
+    }
+
     #[Route('/services-store', name: 'services_admin_store', methods: 'POST')]
     public function serviceStore(Request $request): RedirectResponse|Response
     {
@@ -102,6 +144,17 @@ class AdminController extends AbstractController
 
         $this->entityManager->persist($service);
         $this->entityManager->persist($price);
+        $this->entityManager->flush();
+
+        return $this->redirect('http://localhost:8000/services-admin');
+    }
+
+    #[Route('/services-delete', name: 'services_admin_delete', methods: 'POST')]
+    public function serviceDelete(Request $request): RedirectResponse
+    {
+        $service = $this->entityManager->getRepository(Service::class)
+            ->find($request->request->get('service_id'));
+        $this->entityManager->remove($service);
         $this->entityManager->flush();
 
         return $this->redirect('http://localhost:8000/services-admin');

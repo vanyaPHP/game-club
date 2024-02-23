@@ -24,12 +24,19 @@
                    <th>#</th>
                    <th>Название комнаты</th>
                    <th>Количество ПК/консолей</th>
+                   <th>Действия</th>
                </tr>
                {% for room in rooms %}
                    <tr>
                        <th>{{ room.id }}</th>
                        <th>{{ room.name }}</th>
                        <th>{{ room.computers|length }}</th>
+                       <th>
+                           <form method="POST" action="http://localhost:8000/rooms-delete">
+                               <input type="hidden" value="{{ room.id }}" name="room_id">
+                               <input type="submit" class="btn btn-danger" value="Удалить">
+                           </form>
+                       </th>
                    </tr>
                {% endfor %}
            </table>

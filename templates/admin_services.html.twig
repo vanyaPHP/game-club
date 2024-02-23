@@ -33,6 +33,7 @@
                     <th>Название услуги</th>
                     <th>Комната</th>
                     <th>Цена</th>
+                    <th>Действия</th>
                 </tr>
                 {% for service in services %}
                     <tr>
@@ -40,6 +41,12 @@
                         <th>{{ service.name }}</th>
                         <th>{{ service.room.name }}</th>
                         <th>{{ service.price.amount }} бел. рублей</th>
+                        <th>
+                            <form method="POST" action="http://localhost:8000/services-delete">
+                                <input type="hidden" value="{{ service.id }}" name="service_id">
+                                <input type="submit" class="btn btn-danger" value="Удалить">
+                            </form>
+                        </th>
                     </tr>
                 {% endfor %}
             </table>
